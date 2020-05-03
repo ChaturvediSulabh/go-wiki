@@ -1,8 +1,10 @@
 package main
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
+	"net/http"
 )
 
 //Page to render
@@ -33,10 +35,15 @@ func main() {
 		[]byte("<h1>Hello World!</h1>"),
 	}
 	p1.save()
-	p2, err := load(p1.Title + ".html")
+
+	http.HandleFunc("/", handler)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+}
+
+func handler(w http.ResponseWriter, r *http.Request) {
+	p2, err := load("wiki.html")
 	if err != nil {
 		log.Fatal(err)
 	}
-	// fmt.Println("FileName:", p2.Title)
-	// fmt.Printf("Content:-\n%v", string(p2.Body))
+	fmt.Fprintf(w, string(p2.Body))
 }
