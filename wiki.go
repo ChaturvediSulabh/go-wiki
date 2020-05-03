@@ -5,6 +5,10 @@ type Page struct {
 	Body  []byte
 }
 
+func (p *Page) save() error {
+	return nil
+}
+
 func main() {
 
 }
